@@ -11,33 +11,21 @@ services:
       - FLASK_APP=app.py
     ports:
       - "5000:5000"
-#
-#  db:
-#    image: postgres:14.1-alpine
-#    environment:
-#      - POSTGRES_USER=postgres
-#      - POSTGRES_PASSWORD=postgres
-#      - PGDATA=/data/postgres
-#    volumes:
-#       - postgres-db:/data/postgres
-#    ports:
-#      - '5432:5432'
-
   client:
     build: client
     command: ["npm", "start"]
 
     volumes:
       - ./client:/frontend
-#      - node-modules:/frontend/node_modules
+      - node-modules:/frontend/node_modules
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production # development
+      - PORT=80
+      - PG_HOST=XXX
+      - PG_PASSWORD=XXX
     ports:
-      - '3000:3000'
+      - '80:80'
     depends_on:
       - api
-
-#volumes:
-#  postgres-db:
-#    driver: local
-#  node-modules:
+volumes:
+  node-modules:
