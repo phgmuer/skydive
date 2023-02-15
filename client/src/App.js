@@ -5,8 +5,6 @@ import LoginPage from './components/pages/LoginPage'
 import RegisterPage from './components/pages/RegisterPage'
 import HomePage from './components/pages/HomePage'
 
-//import './App.css'
-
 export default function App() {
     return (
         <Router>

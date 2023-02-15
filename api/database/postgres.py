@@ -10,9 +10,7 @@ import logging
 PG_HOST = os.getenv('PG_HOST')
 PG_PASSWORD = os.getenv('PG_PASSWORD')
 PG_USER = "postgres"
-PG_HOST = "host.docker.internal"
 PG_DATABASE = "logbook"
-PG_PASSWORD = ""
 PG_PORT = 5432
 
 def _hashPassword(password):
