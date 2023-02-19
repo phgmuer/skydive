@@ -179,17 +179,21 @@ $ curl "http://phgmuer.logbuch.link:5000/jumps/add?sessionId=9&sessionToken=xxzc
 * /auth/login -- Login eines Benutzers.
 * * HTTP GET
 * * Requestfelder: username, password
+
 * /auth/register -- Erstellen eines Benutzers.
 * * HTTP PUT
 * * Requestfelder: -
 * * Datenfelder: username, email, password
+
 * /auth/username -- Abfragen des Benutzernamens einer Session.
 * * HTTP GET
 * * Requestfelder: -
 * * Datenfelder: username, email, password
+
 * /jumps/list -- Auflisten der Sprünge.
 * * HTTP GET
 * * Requestfelder: sessionId, sessionToken
+
 * /jumps/add -- Hinzufügen eines Sprunges.
 * * HTTP PUT
 * * Requestfelder: sessionId, sessionToken
