@@ -23,7 +23,7 @@ def _sessionToken():
 
 
 class Database():
-    """Enthält alle interaktionen mit der Postgres Datenbank."""
+    """Enthält alle Interaktionen mit der Postgres Datenbank."""
 
     def __init__(self):
         self.connection = psycopg2.connect(database=PG_DATABASE, host=PG_HOST, user=PG_USER, password=PG_PASSWORD, port=PG_PORT)
