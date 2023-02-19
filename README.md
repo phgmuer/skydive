@@ -160,7 +160,7 @@ $ curl "http://phgmuer.logbuch.link:5000/jumps/list?sessionId=7&sessionToken=hid
 ```
 
 Das Hinzufügen eines Sprunges geschieht via `PUT` Request von [src/client/components/jumps/AddJump.js](https://github.com/phgmuer/skydive/blob/main/src/client/components/jumps/AddJump.js)
-an den Endpoint XXX.
+an den Endpoint `http://phgmuer.logbuch.link:5000/jumps/add`.
 Die Benötigten request felder sind wiederum `sessionToken` und  `sessionId`, sowie die Sprungdaten:
 * `jumpDate` -- das Datum des Sprungs, und
 * `jumpDescription` -- die Beschreibung.
@@ -176,11 +176,24 @@ $ curl "http://phgmuer.logbuch.link:5000/jumps/add?sessionId=9&sessionToken=xxzc
 #### Zusammenfassung Endpoints
 
 ```
-* `/auth/register` -- Erstellen eines Benutzers.
-* `/auth/login` -- Login eines Benutzers.
-* `/auth/username` -- Abfragen des Benutzernamens einer Session.
-* `/jumps/add` -- Hinzufügen eines Sprunges.
-* `/jumps/list` -- Auflisten der Sprünge.
+* /auth/login -- Login eines Benutzers.
+* * HTTP GET
+* * Requestfelder: username, password
+* /auth/register -- Erstellen eines Benutzers.
+* * HTTP PUT
+* * Requestfelder: -
+* * Datenfelder: username, email, password
+* /auth/username -- Abfragen des Benutzernamens einer Session.
+* * HTTP GET
+* * Requestfelder: -
+* * Datenfelder: username, email, password
+* /jumps/list -- Auflisten der Sprünge.
+* * HTTP GET
+* * Requestfelder: sessionId, sessionToken
+* /jumps/add -- Hinzufügen eines Sprunges.
+* * HTTP PUT
+* * Requestfelder: sessionId, sessionToken
+* * Datenfelder: jumpDate, jumpDescription
 ```
 
 ## Infrastruktur
