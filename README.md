@@ -72,41 +72,43 @@ User Sessions.
 
 Beim login wird von der Frontend Komponente [src/client/components/pages/LoginPage.js](https://github.com/phgmuer/skydive/blob/main/client/src/components/pages/LoginPage.js)
 eine `HTTP GET` Anfrage an `http://phgmuer.logbuch.link:5000/auth/login` mit folgenden
-Parametern gemacht:
+Parametern gestartet:
 * `username`
 * `password`
 
-Das `password` wird mittels SHA256 gehashed und in der Tabelle `accounts` mit dem usernamen verglichen. Das heisst
-die Passwörter werden **nicht** im Klartext gespeichert und sind so besser geschützt.
+Das `password` wird mittels SHA256 gehashed und in der Tabelle `accounts` mit dem Zugehörigen Wert für `username` verglichen.
+Das heisst die Passwörter werden **nicht** im Klartext gespeichert und sind so besser geschützt.
 
-Falls das Password richtig ist, wird für den User eine neue Session mit einem zufälligen `token` erstellt, und in der
+Falls das Passwort richtig ist, wird für den User eine neue Session mit der nächsten `sessionId` und 
+einem zufälligen `sessionToken` erstellt, und in der
 Tabelle `sessions` gespeichert. Das Token wird danach auf der Client-Seite in dem Local Storage gespeichert und
-für jeden weiteren weiteren Request (zum auflisten oder hinzufügen der Sprünge) vom Frontend mitgeliefert und
-server-seitig kontrolliert. So wird sichergestellt dass ein user wirklich korrekt eingelogged ist.
+für jeden weiteren Request (zum auflisten oder hinzufügen der Sprünge) vom Frontend mitgeliefert.
+So wird sichergestellt dass ein Benutzer wirklich korrekt eingelogged ist.
 
-Bei einem erfolgreichem login Versuch gibt der Endpunkt den Status `200` mit den Session Daten und dem
+Bei einem erfolgreichem Login-Versuch gibt der Endpunkt den Status `200` mit den Session Daten und dem
 Feld `success: true` zurück.
-Mit inkorrekten Login Daten eine Entsprechende Fehlermeldung und `success: false`.
+Bei inkorrekten Login Daten wird eine Entsprechende Fehlermeldung und `success: false` geliefert.
 
 Beispiel
 
 ```
-$ curl "http://phgmuer.logbuch.link:5000/auth/login?username=test&password=richtigesPassword"
+$ curl "http://phgmuer.logbuch.link:5000/auth/login?username=test&password=richtigesPasswort"
 {"loginUsername":"test","sessionId":7,"sessionToken":"hidxntkqlgkndnzxwysa","success":true}
-$ curl "http://phgmuer.logbuch.link:5000/auth/login?username=test&password=falschesPassword"
+
+$ curl "http://phgmuer.logbuch.link:5000/auth/login?username=test&password=falschesPasswort"
 {"message":"Verification failed.","success":false}
 ```
 
 
 Die Registrierung eines neuen Benutzers funktioniert ähnlich:
 Von der Frontend Komponente [src/client/components/pages/RegisterPage.js](https://github.com/phgmuer/skydive/blob/main/client/src/components/pages/RegisterPage.js)
-jedoch wird ein `HTTP PUT` Request an `http://phgmuer.logbuch.link:5000/auth/register` mit den Feldern
+ wird ein `HTTP PUT` Request an `http://phgmuer.logbuch.link:5000/auth/register` mit den Feldern
 * `username`
 * `password`
 * `email`
 
-geschickt. Der Backend Code in `Database.createUser` überprüft zuerst ob der gewählte Benutzername noch frei ist, und falls
- ja fügt den Benutzername und (Hash des) Passwort in die Tabelle `accounts` ein.
+geschickt. Der Backend Code in [`Database.createUser`](https://github.com/phgmuer/skydive/blob/2ef645e3585c9d416ea28ed1db8a2a36034aa4d1/api/database/postgres.py#L32) überprüft zuerst ob der gewählte Benutzername noch frei ist, und falls
+ ja fügt den Benutzernamen und den Hash des Passworts in die Tabelle `accounts` ein.
 
 
 #### Sprungverwaltung
@@ -118,10 +120,7 @@ Die Sprungverwaltung hat zwei Komponenten:
 * Hinzufügen eines neuen Sprunges für den eingeloggten Benutzer.
 
 Für das Abfragen der Sprünge wird von [src/client/components/jumps/ListJumps.js](https://github.com/phgmuer/skydive/blob/main/client/src/components/jumps/ListJumps.js) eine `HTTP GET` Anfrage an den Endpunkt 
-`http://phgmuer.logbuch.link:5000/jumps/list` mit den Feldern
-* `sessionToken`
-* `sessionId`
-geschickt.
+`http://phgmuer.logbuch.link:5000/jumps/list` mit den Feldern `sessionToken` und  `sessionId` geschickt.
 Die beiden Werte `sessionToken` und `sessionId` identifizieren die aktiv-eingeloggte `session`.
 Auf dem Backend wird zuerst mittels der sessions Tabelle von der aktiven Session auf den Benutzer übersetzt, und danach
 in der Tabelle `jumps` alle sprünge für den Benutzer abgefragt.
@@ -159,12 +158,11 @@ $ curl "http://phgmuer.logbuch.link:5000/jumps/list?sessionId=7&sessionToken=hid
 
 Das Hinzufügen eines Sprunges geschieht via `PUT` Request von [src/client/components/jumps/AddJump.js](https://github.com/phgmuer/skydive/blob/main/client/src/components/jumps/AddJump.js)
 an den Endpoint `http://phgmuer.logbuch.link:5000/jumps/add`.
-Die Benötigten request felder sind wiederum `sessionToken` und  `sessionId`, sowie die Sprungdaten:
+Die benötigten Request Felder sind wiederum `sessionToken` und  `sessionId`, sowie die Sprungdaten:
 * `jumpDate` -- das Datum des Sprungs, und
 * `jumpDescription` -- die Beschreibung.
 
-Ein Beispiel Request:
-
+Eine Beispiel Anfrage zum Hinzufügen eines Sprunges:
 ```
 $ curl "http://phgmuer.logbuch.link:5000/jumps/add?sessionId=9&sessionToken=xxzcjxcwuvtemgetowzg" -X PUT --data-binary '{"jumpDate":"2023-01-01","jumpDescription":"Test"}' 
 {"success":true}
@@ -208,7 +206,7 @@ AWS ist der Marktführer im Cloud Computing und bietet ein umfangreiches Angebot
 Die notwendige Konfiguration der beiden Komponenten geschieht einfach über die AWS Webkonsole:
 * Erstellen/Starten/Stoppen der EC2 Instanz,
 * Öffnen der korrekten Ports,
-* Erstellen der Datenbank, sowie erlauben des internen Traffics von der EC2 instanz zur Datenbank.
+* Erstellen der Datenbank, sowie erlauben des internen Traffics von der EC2 Instanz zur Datenbank.
 
 
 Die geöffeten Ports erlauben folgende Verbindungen
@@ -224,7 +222,7 @@ Ich clone das komplette GIT Repository direkt auf die EC2 Maschine. Dies kann en
 des Repositories (via `zip` file und `scp`) oder mit `git clone` von der EC2 Instanz geschehen.
 
 Danach installiere ich manuell `docker`, `python` und `docker-compose` (via `yum` und `pip3`) und
-füge füge den EC2 user zur korrekten Gruppe hinzu (von [hier](https://gist.github.com/diegopacheco/a63abbdb128592a758687d222bbd3392)).
+füge füge den EC2 User zur korrekten Gruppe hinzu (von [hier](https://gist.github.com/diegopacheco/a63abbdb128592a758687d222bbd3392)).
 
 Danach starte ich die serving Instanz mittels `docker-compose up --build` und der Konfugrationsdatei
 [docker-compose](https://github.com/phgmuer/skydive/blob/main/docker-compose.yml).
@@ -259,11 +257,11 @@ SSH auf die EC2 Instanz verbunden werden und danach den Postgres Client von AWS 
 Befehle auszuführen.
 
 ```shell script
-$ PGPASSWORD=<DatenbankPassword> psql -U postgres -h  <DatenbankHost>  -f init.sql
+$ PGPASSWORD=<DatenbankPasswort> psql -U postgres -h  <DatenbankHost>  -f init.sql
 $ sudo amazon-linux-extras install postgresql10
 ```
 
-Die Platzhalter `DatenbankPassword` und `DatenbankHost` sind mit den entsprechenden Werten zu ersetzen.
+Die Platzhalter `DatenbankPasswort` und `DatenbankHost` sind mit den entsprechenden Werten zu ersetzen.
 
 Neben dem erstellen der Datenbank und Tabellen, kreiert obiges Skript ebenfalls secondary Indizes auf den Tabellen:
 * `sessions` für Spalte `session_token`,
