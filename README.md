@@ -256,16 +256,16 @@ Da die Datenbank nur von der EC2 Instanz erreichbar ist (nicht aber von extern),
 SSH auf die EC2 Instanz verbunden werden und danach den Postgres Client von AWS zu installieren um damit die `init.sql`
 Befehle auszuführen.
 
-```shell script
-$ PGPASSWORD=<DatenbankPasswort> psql -U postgres -h  <DatenbankHost>  -f init.sql
+```
 $ sudo amazon-linux-extras install postgresql10
+$ PGPASSWORD=<DatenbankPasswort> psql -U postgres -h <DatenbankHost>  -f init.sql
 ```
 
 Die Platzhalter `DatenbankPasswort` und `DatenbankHost` sind mit den entsprechenden Werten zu ersetzen.
 
 Neben dem erstellen der Datenbank und Tabellen, kreiert obiges Skript ebenfalls secondary Indizes auf den Tabellen:
 * `sessions` für Spalte `session_token`,
-*  `jump` für Spalte `user_id`),
+*  `jump` für Spalte `user_id`,
 *  `accounts` für Spalte `username`.
 
 Die Indizes reflektieren die verwendeten Zugriffsformen auf die Datenbanken (abgesehen der Primary Keys), und stellt
