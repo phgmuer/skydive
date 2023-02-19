@@ -41,7 +41,7 @@ export default function ListJumps({shouldFetchJumps, setShouldFetchJumps}) {
   <>
   <div style={{height: "1px"}}></div>
   <Typography.Title level={2}>Meine Fallschirmsprünge</Typography.Title>
-  <Typography.Title level={4}>Anzhal Sprünge: {jumps.length}</Typography.Title>
+  <Typography.Title level={4}>Anzahl Sprünge: {jumps.length}</Typography.Title>
   <div style={{height: "20px"}}></div>
   <div className="timeline_container">
   <Timeline

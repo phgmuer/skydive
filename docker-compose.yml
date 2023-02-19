@@ -7,7 +7,7 @@ services:
     volumes:
       - ./api:/backend
     environment:
-      - FLASK_ENV=production
+      - FLASK_ENV=production  # Für lokale Entwicklung: dev
       - FLASK_APP=app.py
       - PG_HOST=XXX
       - PG_PASSWORD=XXX
@@ -15,13 +15,13 @@ services:
       - "5000:5000"
   client:
     build: client
-    command: ["npm", "run", "build"] # "npm", "start"
+    command: ["npm", "run", "build"]  # Für lokale Entwicklung: "npm", "start"
 
     volumes:
       - ./client:/frontend
       - node-modules:/frontend/node_modules
     environment:
-      - NODE_ENV=production # development
+      - NODE_ENV=production  # Für lokale Entwicklung:  development
       - PORT=80
     ports:
       - '80:80'
