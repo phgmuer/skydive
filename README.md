@@ -5,13 +5,13 @@
 
 Als ambitionierter Fallschirmspringer und ehemaliger Schweizermeister im Freefly Skydiving weiss ich um die
 Wichtigkeit des korrekten führens eines Sprung-Logbuchs, um jeden Fallschirmsprung nachvollziehen zu können.
-Dies wird meistens schriflich (offline) gemacht. In dieser Projektarbeit erarbeite ich eine online Lösung für
-das führen eines Logbuchs für Fallschirmpringer.
+Dies wird meistens schriflich (offline) gemacht. In dieser Projektarbeit erarbeite ich eine online Alternative zum 
+führen eines Logbuchs für Fallschirmpringer.
 
-Benutzer können sich nach erfolgreicher Registration und Login ihre Sprünge mit Datum und Beschreibung speichern
+Benutzer können nach erfolgreicher Registration und Login ihre Sprünge mit Datum und Beschreibung speichern
 und anzeigen lassen.
 
-Die Anwendung wird komplett neu geschrieben (kein Aufbau auf einer existierenden Software), und verwendet
+Die Anwendung wurde "von Grund auf" geschrieben (kein Aufbau auf einer existierenden Software), und verwendet
  die Technologien:
   * `Flask` (für das Backend),
   * `Postgres` (für die Datenbank), und
@@ -23,21 +23,20 @@ Die Anwendung wird komplett neu geschrieben (kein Aufbau auf einer existierenden
 ### Bedienung (User-Manual)
 
 Die Anwendung ist unter `http://phgmuer.logbuch.link` (oder direkt via IP `52.91.154.213`) erreichbar, und
-in zwei Teile unterteilt
-* User-Management: Registrieren und Einloggen,
+in zwei Teile unterteilt:
+* User-Management: Registrieren, einloggen, und Session Management,
 * Logbuch Funktionlität: Hinzufügen und auflisten der Fallschirmsprünge
 
 #### User-Management
 
 Die Startseite `http://phgmuer.logbuch.link/` enthält den Login Screen mit einem Username/Passwort Feld, 
 sowie einem Link zu der Registrierungsseite.
-![login](doc/img/login.png)
 
 
-Die Registrierungsseite fragt nach einem Benutzernamen, Passwort und Email-Adresse. Die Emailadresse wird jedoch
-**nicht** verifiziert, das heisst keine Registrationsemail wird veschickt. Dies wäre eine mögliche Erweiterung
-des Projekts.
-![register](doc/img/register.png)
+Die Registrierungsseite `http://phgmuer.logbuch.link/register` fragt nach einem Benutzernamen, Passwort und
+Email-Adresse. Die Emailadresse wird jedoch **nicht** verifiziert, das heisst es wird keine Registrationsemail wird veschickt.
+Dies wäre eine mögliche Erweiterung des Projekts.
+![register](doc/img/login_register.png)
 
 #### Logbuch Funktionalität
 
