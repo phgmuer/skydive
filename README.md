@@ -34,7 +34,7 @@ sowie einem Link zu der Registrierungsseite.
 
 
 Die Registrierungsseite `http://phgmuer.logbuch.link/register` fragt nach einem Benutzernamen, Passwort und
-Email-Adresse. Die Emailadresse wird jedoch **nicht** verifiziert, das heisst es wird keine Registrationsemail wird veschickt.
+Email. Die Emailadresse wird jedoch **nicht** verifiziert, das heisst es wird keine Registrationsemail wird veschickt.
 Dies wäre eine mögliche Erweiterung des Projekts.
 ![register](doc/img/login_register.png)
 
@@ -55,23 +55,22 @@ den zwei Komponenten hin-und-her zu wechseln.
 
 ![list](doc/img/list.png)
 
-Enthält alle gespeicherten Sprünge als Timeline, sortiert nach Sprungdatum.
+Die Listen Komponente zeigt alle gespeicherten Sprünge als Timeline, sortiert nach Sprungdatum.
 
 ### Architektur
-
 Die App ist in zwei Hauptfunktionlitäten aufgeteilt: Benutzerverwaltung und Sprungerwaltung. Beide davon haben
-eine Enstprechende Frontend [src/client/components/](https://github.com/phgmuer/skydive/blob/main/src/client/components) und
-Backend [src/api/](https://github.com/phgmuer/skydive/blob/main/src/api) Komponente.
+eine Enstprechende Frontend [src/client/components/](https://github.com/phgmuer/skydive/tree/main/client/src/components) und
+Backend [src/api/](https://github.com/phgmuer/skydive/tree/main/api) Komponente.
 
 
 #### Benuzterverwaltung
 
-Die Benutzerverwaltung erlaubt das Erstellen von Benutzern, Abfragen der logins und Verwalten der 
+Die Benutzerverwaltung erlaubt das Erstellen von Benutzern, Abfragen der Logins und Verwalten der 
 User Sessions.
 
 ![list](doc/img/auth.png)
 
-Beim login wird von der Frontend Komponente [src/client/components/pages/LoginPage.js](https://github.com/phgmuer/skydive/blob/main/src/client/components/pages/LoginPage.js)
+Beim login wird von der Frontend Komponente [src/client/components/pages/LoginPage.js](https://github.com/phgmuer/skydive/blob/main/client/src/components/pages/LoginPage.js)
 eine `HTTP GET` Anfrage an `http://phgmuer.logbuch.link:5000/auth/login` mit folgenden
 Parametern gemacht:
 * `username`
@@ -100,7 +99,7 @@ $ curl "http://phgmuer.logbuch.link:5000/auth/login?username=test&password=falsc
 
 
 Die Registrierung eines neuen Benutzers funktioniert ähnlich:
-Von der Frontend Komponente [src/client/components/pages/RegisterPage.js](https://github.com/phgmuer/skydive/blob/main/src/client/components/pages/RegisterPage.js)
+Von der Frontend Komponente [src/client/components/pages/RegisterPage.js](https://github.com/phgmuer/skydive/blob/main/client/src/components/pages/RegisterPage.js)
 jedoch wird ein `HTTP PUT` Request an `http://phgmuer.logbuch.link:5000/auth/register` mit den Feldern
 * `username`
 * `password`
@@ -118,7 +117,7 @@ Die Sprungverwaltung hat zwei Komponenten:
 * Abfragen der Sprünge des eingeloggten Benutzers,
 * Hinzufügen eines neuen Sprunges für den eingeloggten Benutzer.
 
-Für das Abfragen der Sprünge wird von [src/client/components/jumps/ListJumps.js](https://github.com/phgmuer/skydive/blob/main/src/client/components/jumps/ListJumps.js) eine `HTTP GET` Anfrage an den Endpunkt 
+Für das Abfragen der Sprünge wird von [src/client/components/jumps/ListJumps.js](https://github.com/phgmuer/skydive/blob/main/client/src/components/jumps/ListJumps.js) eine `HTTP GET` Anfrage an den Endpunkt 
 `http://phgmuer.logbuch.link:5000/jumps/list` mit den Feldern
 * `sessionToken`
 * `sessionId`
@@ -158,7 +157,7 @@ $ curl "http://phgmuer.logbuch.link:5000/jumps/list?sessionId=7&sessionToken=hid
 }
 ```
 
-Das Hinzufügen eines Sprunges geschieht via `PUT` Request von [src/client/components/jumps/AddJump.js](https://github.com/phgmuer/skydive/blob/main/src/client/components/jumps/AddJump.js)
+Das Hinzufügen eines Sprunges geschieht via `PUT` Request von [src/client/components/jumps/AddJump.js](https://github.com/phgmuer/skydive/blob/main/client/src/components/jumps/AddJump.js)
 an den Endpoint `http://phgmuer.logbuch.link:5000/jumps/add`.
 Die Benötigten request felder sind wiederum `sessionToken` und  `sessionId`, sowie die Sprungdaten:
 * `jumpDate` -- das Datum des Sprungs, und
